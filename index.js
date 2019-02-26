@@ -183,7 +183,38 @@ var b = [{
             const READ = new FileReader();
             READ.readAsText(this.files[0]);
             READ.onload = function() {
-                console.log(typeof this.result);
+                let c = [];
+                let d = [];
+
+                let separator = "<----->";
+                let line = "\r\n";
+                // let c = ;
+                // let d = c.slice(0, c.indexOf(separator));
+                let arr = this.result.split(line);
+                let headerArr = arr[0].toString().split(separator);
+                let header1 = headerArr[0].toString();
+                
+                let header1Arr=[];
+
+                header1Arr.push(header1.slice(0, header1.indexOf(";")))
+                header1 = header1.slice(header1.indexOf(";")+1);
+                header1Arr.push(header1.slice(0, header1.indexOf(";")))
+                header1 = header1.slice(header1.indexOf(";") + 1);
+                header1Arr.push(header1.slice(0, header1.indexOf(";")))
+                header1 = header1.slice(header1.indexOf(";") + 1);
+
+                let obj = {};
+                obj[header1Arr[0]] = "4toto-tam";
+                // c.push(obj);
+                obj[header1Arr[1]] = "4toto-tam2";
+                // c.push(obj);
+                obj[header1Arr[2]] = "4toto-tam3";
+
+
+                c.push(obj);
+
+                console.log(arr, header1Arr, header1, c);
+
             };
         };
         
