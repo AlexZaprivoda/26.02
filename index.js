@@ -166,7 +166,6 @@ $export.onclick = function(e) {
       });
     } else {
       Object.keys(a[0]).forEach(key => {
-        // line.push(a[i][key]);
         line.push("");
       });
     }
@@ -180,7 +179,6 @@ $export.onclick = function(e) {
       Object.keys(b[0]).forEach(key => {
         line.push("");
       });
-      // line.push("");
     }
     line.push(NEXT_LINE);
     buffer += line.join(";");
@@ -200,26 +198,23 @@ $import.onclick = function() {
     const READ = new FileReader();
     READ.readAsText(this.files[0]);
     READ.onload = function() {
-      // console.log(this.result);
-
       let separator = "<----->";
       let line = "\r\n";
       let someArr = [];
       let someArr2 = [];
 
       let arrAll = this.result.split(line);
+      arrAll.forEach(e => {
+        someArr.push(e.split(separator));
+      });
 
-      for (let i = 0; i < arrAll.length; i++) {
-        someArr.push(arrAll[i].split(separator));
-      }
-
-      for (let i = 0; i < someArr.length; i++) {
-        for (let j = 0; j < someArr[i].length; j++) {
-          if (someArr[i][j]) {
-            someArr2.push(someArr[i][j].split(";"));
+      someArr.forEach(e => {
+        e.forEach(e => {
+          if (e) {
+            someArr2.push(e.split(";"));
           }
-        }
-      }
+        });
+      });
 
       let obj1 = {};
       let obj2 = {};
@@ -231,54 +226,53 @@ $import.onclick = function() {
       let val2 = [];
 
       let keys1Arr = someArr2.splice(0, 1);
-      for (let i = 0; i < keys1Arr.length; i++) {
-        for (let j = 0; j < keys1Arr[i].length; j++) {
-          if (!keys1Arr[i][j] == "") {
-            keys1.push(keys1Arr[i][j]);
+
+      keys1Arr.forEach(e => {
+        e.forEach(e => {
+          if (!e == "") {
+            keys1.push(e);
           }
-        }
-      }
-      // console.log(keys1Arr);
+        });
+      });
 
       let keys2Arr = someArr2.splice(0, 1);
-      for (let i = 0; i < keys2Arr.length; i++) {
-        for (let j = 0; j < keys2Arr[i].length; j++) {
-          if (!keys2Arr[i][j] == "") {
-            keys2.push(keys2Arr[i][j]);
-          }
-        }
-      }
-      // console.log(keys2);
 
-      for (let i = 0; i < someArr2.length; i++) {
-        if (someArr2[i].length == 4) {
-          for (let j = 0; j < someArr2[i].length; j++) {
-            if (!someArr2[i][j] == "") {
-              val1.push(someArr2[i][j]);
-            }
+      keys2Arr.forEach(e => {
+        e.forEach(e => {
+          if (!e == "") {
+            keys2.push(e);
           }
-        } else if (someArr2[i].length == 6) {
-          for (let j = 0; j < someArr2[i].length; j++) {
-            if (!someArr2[i][j] == "") {
-              val2.push(someArr2[i][j]);
+        });
+      });
+
+      someArr2.forEach(e => {
+        if (e.length == 4) {
+          e.forEach(e => {
+            if (!e == "") {
+              val1.push(e);
             }
-          }
+          });
+        } else if (e.length == 6) {
+          e.forEach(e => {
+            if (!e == "") {
+              val2.push(e);
+            }
+          });
         }
-      }
+      });
 
       while (val1.length >= 3) {
         let buff = val1.splice(0, 3);
         if (buff) {
-          for (let j = 0; j < buff.length; j++) {
-            if (j == 1) {
-              let arrStrToNum = buff[j].split(",");
+          buff.forEach((e, i) => {
+            if (i == 1) {
+              let arrStrToNum = e.split(",");
               arrStrToNum = arrStrToNum.map(e => {
                 return parseInt(e);
               });
-              // console.log(arrStrToNum);
-              obj1[keys1[j]] = arrStrToNum;
-            } else obj1[keys1[j]] = buff[j];
-          }
+              obj1[keys1[i]] = arrStrToNum;
+            } else obj1[keys1[i]] = e;
+          });
           let tempObj = Object.assign({}, obj1);
           c.push(tempObj);
         }
@@ -287,34 +281,13 @@ $import.onclick = function() {
       while (val2.length >= 4) {
         let buff = val2.splice(0, 4);
         if (buff) {
-          for (let j = 0; j < buff.length; j++) {
-            obj2[keys2[j]] = buff[j];
-          }
+          buff.forEach((e, i) => {
+            obj2[keys2[i]] = e;
+          });
           let tempObj = Object.assign({}, obj2);
           d.push(tempObj);
         }
       }
-
-      // console.log(a, b, c, d);
-
-      // console.log(keys1, keys2, someArr2);
-
-      //   let headerArr = arr[0].toString().split(separator);
-      //   console.log(headerArr);
-      //   let header1 = headerArr[0].toString();
-      //   let header1Arr = [];
-      //   header1Arr.push(header1.slice(0, header1.indexOf(";")));
-      //   header1 = header1.slice(header1.indexOf(";") + 1);
-      //   header1Arr.push(header1.slice(0, header1.indexOf(";")));
-      //   header1 = header1.slice(header1.indexOf(";") + 1);
-      //   header1Arr.push(header1.slice(0, header1.indexOf(";")));
-      //   header1 = header1.slice(header1.indexOf(";") + 1);
-      //   let obj = {};
-      //   obj[header1Arr[0]] = "4toto-tam";
-      //   obj[header1Arr[1]] = "4toto-tam2";
-      //   obj[header1Arr[2]] = "4toto-tam3";
-      //   c.push(obj);
-      // console.log(arr, header1Arr, header1, c);
     };
   };
 
